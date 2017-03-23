@@ -36,6 +36,6 @@ defmodule CLI do
     result = integers 
              |> LinearFunction.max_four
 
-    IO.puts "Your result is #{inspect result}"
+    IO.puts "Result is #{inspect result}"
   end
 end
