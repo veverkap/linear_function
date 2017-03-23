@@ -1,3 +1,4 @@
+require "benchmark/ips"
 require_relative "linear_function"
 
 optparse = OptionParser.new do |opts|

@@ -1,8 +1,15 @@
-require "benchmark/ips"
-require "bundler/setup"
-require "logger"
+require_relative "cli"
+# Adding in a few helpers to Integer (aka monkey patching)
+module IntegerHelpers
+  N_BYTES = [42].pack('i').size
+  N_BITS = N_BYTES * 16
+  MAX = 2 ** (N_BITS - 2) - 1
+  MIN = -MAX - 1
+end
+  
+# including these into integer
+Integer.include IntegerHelpers
 
-# This 
 class LinearFunction
   class << self
     # Iterates through array of integers and returns the largest four
@@ -13,11 +20,12 @@ class LinearFunction
     #   Array of 1 or more integers.  
     #
     # == Returns:
-    # Array of four largest integers.  Zero padded if input has fewer than four
+    # Array of four largest integers. 
+    # If input has fewer than four integers, we pad with Integer::MIN
     #    
     def max_four(integers)
       integers ||= [] # Handles nil arrays
-      integers.inject([0,0,0,0]) do |accumulator, integer|
+      integers.inject([Integer::MIN,Integer::MIN,Integer::MIN,Integer::MIN]) do |accumulator, integer|
         first, second, third, fourth = accumulator
         
         if integer > first
@@ -43,6 +51,8 @@ class LinearFunction
           accumulator
         end
       end
-    end
+    end 
   end
 end
+
+CLI.run if ARGV.length > 0
